@@ -121,11 +121,11 @@ if [ "$INSTALL_MUMBLE" == 1 ]; then
   if [[ "$VERSION_ID" == "24.04" ]]; then
     PASSWORD_LOG=$(sudo grep -m 1 SuperUser /var/log/syslog)
     PASSWORD=($PASSWORD_LOG)
-    read -p "${GREEN}Mumble Server is now installed. The SuperUser password is ${YELLOW}${PASSWORD[-1]}${GREEN}. Press enter to continue.${NC}" < /dev/tty
+#    read -p "${GREEN}Mumble Server is now installed. The SuperUser password is ${YELLOW}${PASSWORD[-1]}${GREEN}. Press enter to continue.${NC}" < /dev/tty
   else
     PASSWORD_LOG=$(sudo grep -m 1 SuperUser /var/log/mumble-server/mumble-server.log)
     PASSWORD=($PASSWORD_LOG)
-    read -p "${GREEN}Mumble Server is now installed. The SuperUser password is ${YELLOW}${PASSWORD[-1]}${GREEN}. Press enter to continue.${NC}" < /dev/tty
+#    read -p "${GREEN}Mumble Server is now installed. The SuperUser password is ${YELLOW}${PASSWORD[-1]}${GREEN}. Press enter to continue.${NC}" < /dev/tty
   fi
 fi
 
