@@ -136,8 +136,8 @@ wget https://github.com/takat-servers/OpenTAKServer-Installer-takat/raw/master/c
 cp "$INSTALLER_DIR"/config.cfg ~/ots/ca/ca_config.cfg
 
 # Generate CA
-wget https://github.com/takat-servers/OpenTAKServer-Installer-takat-takat/raw/master/makeRootCa.sh -qO "$INSTALLER_DIR"/makeRootCa.sh
-wget https://github.com/takat-servers/OpenTAKServer-Installer-takat-takat/raw/master/makeCert.sh -qO "$INSTALLER_DIR"/makeCert.sh
+wget https://github.com/takat-servers/OpenTAKServer-Installer-takat/raw/master/makeRootCa.sh -qO "$INSTALLER_DIR"/makeRootCa.sh
+wget https://github.com/takat-servers/OpenTAKServer-Installer-takat/raw/master/makeCert.sh -qO "$INSTALLER_DIR"/makeCert.sh
 bash ./makeRootCa.sh --ca-name OpenTAKServer-CA
 bash ./makeCert.sh server opentakserver
 
