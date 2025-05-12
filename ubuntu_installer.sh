@@ -1,10 +1,10 @@
 #!/bin/bash
-
+# TAKAT Version: 0.1
 INSTALLER_DIR=/tmp/ots_installer
 mkdir -p $INSTALLER_DIR
 cd $INSTALLER_DIR
 
-wget https://github.com/takat-servers/OpenTAKServer-Installer-takat/raw/master/colors.sh -qO "$INSTALLER_DIR"/colors.sh
+wget https://github.com/brian7704/OpenTAKServer-Installer/raw/master/colors.sh -qO "$INSTALLER_DIR"/colors.sh
 . "$INSTALLER_DIR"/colors.sh
 
 . /etc/os-release
@@ -37,7 +37,6 @@ echo "${GREEN} Installing OpenTAKServer from PyPI...${NC}"
 python3 -m venv --system-site-packages ~/.opentakserver_venv
 source "$HOME"/.opentakserver_venv/bin/activate
 pip3 install opentakserver
-#pip3 install git+https://github.com/takat-servers/OpenTAKServer.git@takat-servers-patch
 echo "${GREEN}OpenTAKServer Installed!${NC}"
 
 echo "${GREEN}Initializing Database...${NC}"
@@ -46,48 +45,10 @@ flask db upgrade
 cd "$INSTALLER_DIR"
 echo "${GREEN}Finished initializing database!${NC}"
 
-INSTALL_ZEROTIER=0
-# while :
-# do
-#   read -p "${GREEN}Would you like to install ZeroTier?${NC} [y/n]" INSTALL_ZEROTIER < /dev/tty
-#   if [[ "$INSTALL_ZEROTIER" =~ [yY]|[yY][eE][sS] ]]; then
-#     INSTALL_ZEROTIER=1
-#     break
-#   elif [[ "$INSTALL_ZEROTIER" =~ [nN]|[nN][oO] ]]; then
-#     INSTALL_ZEROTIER=0
-#     break
-#   else
-#     echo "${RED}Invalid input${NC}"
-#   fi
-# done
-
-if [ "$INSTALL_ZEROTIER" == 1 ];
-then
-  read -p "${GREEN}What is your ZeroTier network ID? ${NC}" ZT_NETWORK_ID < /dev/tty
-  curl -s 'https://raw.githubusercontent.com/zerotier/ZeroTierOne/master/doc/contact%40zerotier.com.gpg' | gpg --import && \
-  curl -s 'https://install.zerotier.com/' -o /tmp/zerotier_installer.sh
-  if gpg --verify /tmp/zerotier_installer.sh; then
-    sudo NEEDRESTART_MODE=a bash /tmp/zerotier_installer.sh
-  fi
-
-  while :
-  do
-      ZT_JOIN=$(sudo zerotier-cli join "$ZT_NETWORK_ID")
-      echo "$ZT_JOIN"
-      if [ "$ZT_JOIN" != "200 join OK" ]; then
-        echo "${RED}Failed to join network ${ZT_NETWORK_ID}."
-        read -p "${GREEN}Please re-enter your ZeroTier network ID: ${NC}" ZT_NETWORK_ID < /dev/tty
-      else
-        break
-      fi
-  done
-  read -p "${GREEN}ZeroTier has been installed. Please log into your ZeroTier admin account and authorize this server and then press enter to continue.${NC}" < /dev/tty
-fi
-
 INSTALL_MUMBLE=1
 # while :
 # do
-#   # read -p "${GREEN}Would you like to install Mumble Server?${NC} [y/n]" INSTALL_MUMBLE < /dev/tty
+#   read -p "${GREEN}Would you like to install Mumble Server?${NC} [y/n]" INSTALL_MUMBLE < /dev/tty
 #   if [[ "$INSTALL_MUMBLE" =~ [yY]|[yY][eE][sS] ]]; then
 #     INSTALL_MUMBLE=1
 #     break
@@ -132,12 +93,12 @@ fi
 echo "${GREEN}Creating certificate authority...${NC}"
 
 mkdir -p ~/ots/ca
-wget https://github.com/takat-servers/OpenTAKServer-Installer-takat/raw/master/config.cfg -qO "$INSTALLER_DIR"/config.cfg
+wget https://github.com/brian7704/OpenTAKServer-Installer/raw/master/config.cfg -qO "$INSTALLER_DIR"/config.cfg
 cp "$INSTALLER_DIR"/config.cfg ~/ots/ca/ca_config.cfg
 
 # Generate CA
-wget https://github.com/takat-servers/OpenTAKServer-Installer-takat/raw/master/makeRootCa.sh -qO "$INSTALLER_DIR"/makeRootCa.sh
-wget https://github.com/takat-servers/OpenTAKServer-Installer-takat/raw/master/makeCert.sh -qO "$INSTALLER_DIR"/makeCert.sh
+wget https://github.com/brian7704/OpenTAKServer-Installer/raw/master/makeRootCa.sh -qO "$INSTALLER_DIR"/makeRootCa.sh
+wget https://github.com/brian7704/OpenTAKServer-Installer/raw/master/makeCert.sh -qO "$INSTALLER_DIR"/makeCert.sh
 bash ./makeRootCa.sh --ca-name OpenTAKServer-CA
 bash ./makeCert.sh server opentakserver
 
@@ -157,7 +118,7 @@ elif [ "$KERNEL_BITS" == 64 ]; then
 fi
 
 tar -xf ./*.tar.gz
-wget https://github.com/takat-servers/OpenTAKServer-Installer-takat/raw/master/mediamtx.yml -qO ~/ots/mediamtx/mediamtx.yml
+wget https://github.com/brian7704/OpenTAKServer-Installer/raw/master/mediamtx.yml -qO ~/ots/mediamtx/mediamtx.yml
 
 sudo tee /etc/systemd/system/mediamtx.service >/dev/null << EOF
 [Unit]
@@ -190,11 +151,11 @@ sudo rm -f /etc/nginx/sites-enabled/*
 sudo mkdir -p /etc/nginx/streams-available
 sudo mkdir -p /etc/nginx/streams-enabled
 
-sudo wget https://raw.githubusercontent.com/takat-servers/OpenTAKServer-Installer-takat/master/nginx_configs/rabbitmq -qO /etc/nginx/streams-available/rabbitmq
-sudo wget https://raw.githubusercontent.com/takat-servers/OpenTAKServer-Installer-takat/refs/heads/master/nginx_configs/mediamtx -qO /etc/nginx/streams-available/mediamtx
-sudo wget https://raw.githubusercontent.com/takat-servers/OpenTAKServer-Installer-takat/refs/heads/master/nginx_configs/ots_certificate_enrollment -qO /etc/nginx/sites-available/ots_certificate_enrollment
-sudo wget https://raw.githubusercontent.com/takat-servers/OpenTAKServer-Installer-takat/refs/heads/master/nginx_configs/ots_http -qO /etc/nginx/sites-available/ots_http
-sudo wget https://raw.githubusercontent.com/takat-servers/OpenTAKServer-Installer-takat/refs/heads/master/nginx_configs/ots_https -qO /etc/nginx/sites-available/ots_https
+sudo wget https://raw.githubusercontent.com/brian7704/OpenTAKServer-Installer/master/nginx_configs/rabbitmq -qO /etc/nginx/streams-available/rabbitmq
+sudo wget https://raw.githubusercontent.com/brian7704/OpenTAKServer-Installer/refs/heads/master/nginx_configs/mediamtx -qO /etc/nginx/streams-available/mediamtx
+sudo wget https://raw.githubusercontent.com/brian7704/OpenTAKServer-Installer/refs/heads/master/nginx_configs/ots_certificate_enrollment -qO /etc/nginx/sites-available/ots_certificate_enrollment
+sudo wget https://raw.githubusercontent.com/brian7704/OpenTAKServer-Installer/refs/heads/master/nginx_configs/ots_http -qO /etc/nginx/sites-available/ots_http
+sudo wget https://raw.githubusercontent.com/brian7704/OpenTAKServer-Installer/refs/heads/master/nginx_configs/ots_https -qO /etc/nginx/sites-available/ots_https
 
 sudo sed -i "s~SERVER_CERT_FILE~${HOME}/ots/ca/certs/opentakserver/opentakserver.pem~g" /etc/nginx/sites-available/ots_https
 sudo sed -i "s~SERVER_CERT_FILE~${HOME}/ots/ca/certs/opentakserver/opentakserver.pem~g" /etc/nginx/sites-available/ots_certificate_enrollment
@@ -217,7 +178,7 @@ sudo systemctl restart nginx
 sudo mkdir -p /var/www/html/opentakserver
 sudo chmod a+rw /var/www/html/opentakserver
 cd /var/www/html/opentakserver
-lastversion --assets extract takat-servers/OpenTAKServer-UI
+lastversion --assets extract brian7704/OpenTAKServer-UI
 
 sudo tee /etc/systemd/system/opentakserver.service >/dev/null << EOF
 [Unit]
@@ -240,7 +201,7 @@ sudo systemctl enable opentakserver
 sudo systemctl start opentakserver
 
 echo "${GREEN}Configuring RabbitMQ...${NC}"
-sudo wget https://raw.githubusercontent.com/takat-servers/OpenTAKServer-Installer-takat/master/rabbitmq.conf -qO /etc/rabbitmq/rabbitmq.conf
+sudo wget https://raw.githubusercontent.com/brian7704/OpenTAKServer-Installer/master/rabbitmq.conf -qO /etc/rabbitmq/rabbitmq.conf
 
 # The following lines all end in "; \" because rabbitmq-plugins stops the script, even when it's successful
 # Adding "; \" is a janky fix to make the rest of the script work
