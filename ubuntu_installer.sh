@@ -33,10 +33,22 @@ sudo NEEDRESTART_MODE=a apt install curl python3 python3-pip python3-venv rabbit
 #sudo cp $INSTALLER_DIR /etc/iptables/
 #sudo iptables-restore < /etc/iptables/rules.v4
 
-echo "${GREEN} Installing OpenTAKServer from PyPI...${NC}"
+# echo "${GREEN} Installing OpenTAKServer from PyPI...${NC}"
+# python3 -m venv --system-site-packages ~/.opentakserver_venv
+# source "$HOME"/.opentakserver_venv/bin/activate
+# pip3 install opentakserver
+# echo "${GREEN}OpenTAKServer Installed!${NC}"
+
+# echo "${GREEN}Initializing Database...${NC}"
+# cd "$HOME"/.opentakserver_venv/lib/python3.*/site-packages/opentakserver
+# flask db upgrade
+# cd "$INSTALLER_DIR"
+# echo "${GREEN}Finished initializing database!${NC}"
+
+echo "${GREEN} Installing OpenTAKServer from GitHub...${NC}"
 python3 -m venv --system-site-packages ~/.opentakserver_venv
 source "$HOME"/.opentakserver_venv/bin/activate
-pip3 install opentakserver
+pip3 install git+https://github.com/takat-servers/OpenTAKServer.git@main
 echo "${GREEN}OpenTAKServer Installed!${NC}"
 
 echo "${GREEN}Initializing Database...${NC}"
