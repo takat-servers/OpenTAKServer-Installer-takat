@@ -4,7 +4,7 @@ INSTALLER_DIR=/tmp/ots_installer
 mkdir -p $INSTALLER_DIR
 cd $INSTALLER_DIR
 
-wget https://github.com/brian7704/OpenTAKServer-Installer/raw/master/colors.sh -qO "$INSTALLER_DIR"/colors.sh
+wget https://github.com/takat-servers/OpenTAKServer-Installer-takat/raw/main/colors.sh -qO "$INSTALLER_DIR"/colors.sh
 . "$INSTALLER_DIR"/colors.sh
 
 . /etc/os-release
@@ -93,12 +93,12 @@ fi
 echo "${GREEN}Creating certificate authority...${NC}"
 
 mkdir -p ~/ots/ca
-wget https://github.com/brian7704/OpenTAKServer-Installer/raw/master/config.cfg -qO "$INSTALLER_DIR"/config.cfg
+wget https://github.com/takat-servers/OpenTAKServer-Installer-takat/raw/main/config.cfg -qO "$INSTALLER_DIR"/config.cfg
 cp "$INSTALLER_DIR"/config.cfg ~/ots/ca/ca_config.cfg
 
 # Generate CA
-wget https://github.com/brian7704/OpenTAKServer-Installer/raw/master/makeRootCa.sh -qO "$INSTALLER_DIR"/makeRootCa.sh
-wget https://github.com/brian7704/OpenTAKServer-Installer/raw/master/makeCert.sh -qO "$INSTALLER_DIR"/makeCert.sh
+wget https://github.com/takat-servers/OpenTAKServer-Installer-takat/raw/main/makeRootCa.sh -qO "$INSTALLER_DIR"/makeRootCa.sh
+wget https://github.com/takat-servers/OpenTAKServer-Installer-takat/raw/main/makeCert.sh -qO "$INSTALLER_DIR"/makeCert.sh
 bash ./makeRootCa.sh --ca-name OpenTAKServer-CA
 bash ./makeCert.sh server opentakserver
 
@@ -118,7 +118,7 @@ elif [ "$KERNEL_BITS" == 64 ]; then
 fi
 
 tar -xf ./*.tar.gz
-wget https://github.com/brian7704/OpenTAKServer-Installer/raw/master/mediamtx.yml -qO ~/ots/mediamtx/mediamtx.yml
+wget https://github.com/takat-servers/OpenTAKServer-Installer-takat/raw/main/mediamtx.yml -qO ~/ots/mediamtx/mediamtx.yml
 
 sudo tee /etc/systemd/system/mediamtx.service >/dev/null << EOF
 [Unit]
@@ -151,11 +151,11 @@ sudo rm -f /etc/nginx/sites-enabled/*
 sudo mkdir -p /etc/nginx/streams-available
 sudo mkdir -p /etc/nginx/streams-enabled
 
-sudo wget https://raw.githubusercontent.com/brian7704/OpenTAKServer-Installer/master/nginx_configs/rabbitmq -qO /etc/nginx/streams-available/rabbitmq
-sudo wget https://raw.githubusercontent.com/brian7704/OpenTAKServer-Installer/refs/heads/master/nginx_configs/mediamtx -qO /etc/nginx/streams-available/mediamtx
-sudo wget https://raw.githubusercontent.com/brian7704/OpenTAKServer-Installer/refs/heads/master/nginx_configs/ots_certificate_enrollment -qO /etc/nginx/sites-available/ots_certificate_enrollment
-sudo wget https://raw.githubusercontent.com/brian7704/OpenTAKServer-Installer/refs/heads/master/nginx_configs/ots_http -qO /etc/nginx/sites-available/ots_http
-sudo wget https://raw.githubusercontent.com/brian7704/OpenTAKServer-Installer/refs/heads/master/nginx_configs/ots_https -qO /etc/nginx/sites-available/ots_https
+sudo wget https://raw.githubusercontent.com/takat-servers/OpenTAKServer-Installer-takat/main/nginx_configs/rabbitmq -qO /etc/nginx/streams-available/rabbitmq
+sudo wget https://raw.githubusercontent.com/takat-servers/OpenTAKServer-Installer-takat/refs/heads/main/nginx_configs/mediamtx -qO /etc/nginx/streams-available/mediamtx
+sudo wget https://raw.githubusercontent.com/takat-servers/OpenTAKServer-Installer-takat/refs/heads/main/nginx_configs/ots_certificate_enrollment -qO /etc/nginx/sites-available/ots_certificate_enrollment
+sudo wget https://raw.githubusercontent.com/takat-servers/OpenTAKServer-Installer-takat/refs/heads/main/nginx_configs/ots_http -qO /etc/nginx/sites-available/ots_http
+sudo wget https://raw.githubusercontent.com/takat-servers/OpenTAKServer-Installer-takat/refs/heads/main/nginx_configs/ots_https -qO /etc/nginx/sites-available/ots_https
 
 sudo sed -i "s~SERVER_CERT_FILE~${HOME}/ots/ca/certs/opentakserver/opentakserver.pem~g" /etc/nginx/sites-available/ots_https
 sudo sed -i "s~SERVER_CERT_FILE~${HOME}/ots/ca/certs/opentakserver/opentakserver.pem~g" /etc/nginx/sites-available/ots_certificate_enrollment
@@ -201,7 +201,7 @@ sudo systemctl enable opentakserver
 sudo systemctl start opentakserver
 
 echo "${GREEN}Configuring RabbitMQ...${NC}"
-sudo wget https://raw.githubusercontent.com/brian7704/OpenTAKServer-Installer/master/rabbitmq.conf -qO /etc/rabbitmq/rabbitmq.conf
+sudo wget https://raw.githubusercontent.com/takat-servers/OpenTAKServer-Installer-takat/main/rabbitmq.conf -qO /etc/rabbitmq/rabbitmq.conf
 
 # The following lines all end in "; \" because rabbitmq-plugins stops the script, even when it's successful
 # Adding "; \" is a janky fix to make the rest of the script work
