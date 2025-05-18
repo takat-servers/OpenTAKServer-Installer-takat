@@ -48,7 +48,7 @@ sudo NEEDRESTART_MODE=a apt install curl python3 python3-pip python3-venv rabbit
 echo "${GREEN} Installing OpenTAKServer from GitHub...${NC}"
 python3 -m venv --system-site-packages ~/.opentakserver_venv
 source "$HOME"/.opentakserver_venv/bin/activate
-pip3 install git+https://github.com/takat-servers/OpenTAKServer.git@main
+pip3 install git+https://github.com/takat-servers/OpenTAKServer.git@takat-servers-patch
 echo "${GREEN}OpenTAKServer Installed!${NC}"
 
 echo "${GREEN}Initializing Database...${NC}"
