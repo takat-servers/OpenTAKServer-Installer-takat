@@ -1,4 +1,7 @@
 #!/bin/bash
+
+#curl -s -L https://raw.githubusercontent.com/takat-servers/OpenTAKServer-Installer-takat/refs/heads/main/ubuntu_installer.sh | bash -
+
 # TAKAT Version: 0.1
 INSTALLER_DIR=/tmp/ots_installer
 mkdir -p $INSTALLER_DIR
@@ -100,6 +103,8 @@ if [ "$INSTALL_MUMBLE" == 1 ]; then
     PASSWORD=($PASSWORD_LOG)
 #    read -p "${GREEN}Mumble Server is now installed. The SuperUser password is ${YELLOW}${PASSWORD[-1]}${GREEN}. Press enter to continue.${NC}" < /dev/tty
   fi
+  echo "${GREEN}Mumble Server is now installed. The SuperUser password is ${YELLOW}${PASSWORD[-1]}${GREEN}. Press enter to continue.${NC}"
+  ${PASSWORD[-1]} >> ~/ots/mumble_password.txt
 fi
 
 echo "${GREEN}Creating certificate authority...${NC}"
